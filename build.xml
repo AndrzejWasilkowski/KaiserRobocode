@@ -1,5 +1,5 @@
 <project name="kaiser" default="dist" basedir=".">
-    <property name="version" value="0.1.2"/>
+    <property name="version" value="0.1.3"/>
     <description>
         build file for robocode Kaiser
     </description>
