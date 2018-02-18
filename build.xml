@@ -41,7 +41,7 @@
         <copy file="src/pl/sternik/aw/robocode/Kaiser.properties"
               todir="robots/pl/sternik/aw/robocode" />
         <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-        <jar jarfile="${dist}/rudy102_${version}.jar" basedir="${build}"/>
+        <jar jarfile="${dist}/Kaiser_${version}.jar" basedir="${build}"/>
     </target>
 
     <target name="clean"
