@@ -1,11 +1,11 @@
 <project name="kaiser" default="dist" basedir=".">
-    <property name="version" value="0.1.5"/>
+    <property name="version" value="0.1.6"/>
     <description>
         build file for robocode Kaiser
     </description>
     <!-- set global properties for this build -->
     <property name="src" location="src"/>
-    <property name="build" location="robots"/>
+    <property name="build" location="out"/>
     <property name="dist" location="release"/>
 
     <target name="init">
@@ -38,8 +38,9 @@
             description="generate the distribution">
         <!-- Create the distribution directory -->
         <mkdir dir="${dist}"/>
+        <filter token="SNAPSHOT" value="${version}"/>
         <copy file="src/pl/sternik/aw/robocode/Kaiser.properties"
-              todir="robots/pl/sternik/aw/robocode" />
+              todir="out/pl/sternik/aw/robocode" />
         <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
         <jar jarfile="${dist}/Kaiser_${version}.jar" basedir="${build}"/>
     </target>
