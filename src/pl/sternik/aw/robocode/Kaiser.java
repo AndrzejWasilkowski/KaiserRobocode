@@ -1,46 +1,45 @@
 package pl.sternik.aw.robocode;
 
-import robocode.AdvancedRobot;
-import robocode.Robot;
-import robocode.ScannedRobotEvent;
+import pl.sternik.aw.robocode.Fire.Shoot;
+import pl.sternik.aw.robocode.Fire.ShootBasic;
+import pl.sternik.aw.robocode.Movment.Movment;
+import pl.sternik.aw.robocode.Movment.MovmentTactics;
+import robocode.*;
 
-public class Kaiser extends AdvancedRobot {
+public class Kaiser extends AdvancedRobot{
+    Shoot shoot = new ShootBasic(this);
+    Movment movement = new MovmentTactics(this);
+
     public void run() {
-        double dystansPrzebyty = 0;
-        int kierunek = 1;
-        while (true) {
-            while (dystansPrzebyty != 300) {
-                ahead(100);
-                turnGunRight(360 * kierunek);
-                dystansPrzebyty += 100;
-                kierunek *= -1;
-            }
-            dystansPrzebyty = 0;
-            while (dystansPrzebyty != 300) {
-                back(100);
-                turnGunRight(360 * kierunek);
-                dystansPrzebyty += 100;
-                kierunek *= -1;
-            }
-            dystansPrzebyty = 0;
-        }
+        setAdjustRadarForGunTurn(true);
+        setAdjustRadarForRobotTurn(true);
+        turnRadarRightRadians(Double.POSITIVE_INFINITY);
     }
 
     public void onScannedRobot(ScannedRobotEvent e) {
-        stop();
-        fire_alt(e.getDistance());
-        resume();
+        setTurnRadarLeft(getRadarTurnRemainingRadians());
+        double bearing=e.getBearingRadians() + getHeadingRadians();
+        double enemyLaterPosition=e.getVelocity() * Math.sin(e.getHeadingRadians() - bearing);
+        double weaponTurn;
+        weaponTurn = robocode.util.Utils.normalRelativeAngle(bearing - getGunHeadingRadians() + enemyLaterPosition);
+        setTurnGunRightRadians(weaponTurn);
 
+        movement.move();
+        shoot.shoot(e.getDistance());
     }
 
-    public void fire_alt(double odleglosc){
-        if(odleglosc > 150 || getEnergy() < 13) {
-            fire(1);
-        } else if (odleglosc > 100){
-            fire(2);
-        } else {
-            fire(3);
-        }
+    @Override
+    public void onHitRobot(HitRobotEvent e) {
+        movement.onHitRobot(e);
     }
 
+    @Override
+    public void onHitByBullet(HitByBulletEvent e) {
+        movement.onHitByBullet(e);
+    }
+
+    @Override
+    public void onBulletMissed(BulletMissedEvent e) {
+        movement.onBulletMissed(e);
+    }
 }
