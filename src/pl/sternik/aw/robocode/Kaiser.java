@@ -4,11 +4,14 @@ import pl.sternik.aw.robocode.Fire.Shoot;
 import pl.sternik.aw.robocode.Fire.ShootBasic;
 import pl.sternik.aw.robocode.Movment.Movment;
 import pl.sternik.aw.robocode.Movment.MovmentTactics;
+import pl.sternik.aw.robocode.Scanner.Scanner;
+import pl.sternik.aw.robocode.Scanner.ScannerBasic;
 import robocode.*;
 
 public class Kaiser extends AdvancedRobot{
     Shoot shoot = new ShootBasic(this);
     Movment movement = new MovmentTactics(this);
+    Scanner scanner = new ScannerBasic(this);
 
     public void run() {
         setAdjustRadarForGunTurn(true);
@@ -17,12 +20,7 @@ public class Kaiser extends AdvancedRobot{
     }
 
     public void onScannedRobot(ScannedRobotEvent e) {
-        setTurnRadarLeft(getRadarTurnRemainingRadians());
-        double bearing=e.getBearingRadians() + getHeadingRadians();
-        double enemyLaterPosition=e.getVelocity() * Math.sin(e.getHeadingRadians() - bearing);
-        double weaponTurn;
-        weaponTurn = robocode.util.Utils.normalRelativeAngle(bearing - getGunHeadingRadians() + enemyLaterPosition);
-        setTurnGunRightRadians(weaponTurn);
+        scanner.onScannedRobot(e);
 
         movement.move();
         shoot.shoot(e.getDistance());

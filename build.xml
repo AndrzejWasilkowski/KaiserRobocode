@@ -1,5 +1,5 @@
 <project name="kaiser" default="dist" basedir=".">
-    <property name="version" value="0.5.1"/>
+    <property name="version" value="0.5.2"/>
     <description>
         build file for robocode Kaiser
     </description>
@@ -39,10 +39,16 @@
         <!-- Create the distribution directory -->
         <mkdir dir="${dist}"/>
         <filter token="SNAPSHOT" value="${version}"/>
-        <copy file="src/pl/sternik/aw/robocode/Kaiser.properties"
+        <copy file="src/pl/sternik/aw/robocode/Kaiser.properties" filtering="true"
               todir="out/pl/sternik/aw/robocode" />
         <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
-        <jar jarfile="${dist}/Kaiser_${version}.jar" basedir="${build}"/>
+        <jar jarfile="${dist}/Kaiser_${version}.jar" basedir="${build}">
+            <manifest>
+                <!-- Who is building this jar? -->
+                <attribute name="Built-By" value="${user.name}"/>
+                <attribute name="robots" value="pl.sternik.aw.robocode.Kaiser"/>
+            </manifest>
+        </jar>
     </target>
 
     <target name="clean"
