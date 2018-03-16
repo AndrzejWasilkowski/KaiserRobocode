@@ -21,11 +21,12 @@ public class Kaiser extends AdvancedRobot{
         double bearing=e.getBearingRadians() + getHeadingRadians();
         double enemyLaterPosition=e.getVelocity() * Math.sin(e.getHeadingRadians() - bearing);
         double weaponTurn;
-        weaponTurn = robocode.util.Utils.normalRelativeAngle(bearing - getGunHeadingRadians() + enemyLaterPosition);
+        weaponTurn = robocode.util.Utils.normalRelativeAngle(bearing - getGunHeadingRadians() + enemyLaterPosition/20);
         setTurnGunRightRadians(weaponTurn);
 
         movement.move();
         shoot.shoot(e.getDistance());
+        execute();
     }
 
     @Override

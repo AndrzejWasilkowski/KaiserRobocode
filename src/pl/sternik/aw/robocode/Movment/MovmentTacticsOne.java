@@ -1,11 +1,13 @@
 package pl.sternik.aw.robocode.Movment;
 
 import pl.sternik.aw.robocode.Kaiser;
-import robocode.*;
+import robocode.BulletMissedEvent;
+import robocode.HitByBulletEvent;
+import robocode.HitRobotEvent;
 
-class MovmentTacticsOne implements Movment {
+public class MovmentTacticsOne implements Movment {
     Kaiser kaiser;
-    private int pudla = 1;
+
     public double battlefieldWidth;
     public double battlefieldHeight;
     private final int wall = 100;
@@ -43,7 +45,7 @@ class MovmentTacticsOne implements Movment {
                 kaiser.setTurnRight(10);
             }
         }
-        kaiser.execute();
+
     }
 
     @Override
